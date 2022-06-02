@@ -11,20 +11,38 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@SpringBootTest
 @Slf4j
 @RequiredArgsConstructor
 class ProxyApplicationTests {
-	private final ApplicationContext ac;
+
 
 	@Test
 	void contextLoads() {
-		log.info("ContainerClass = {} " ,ac.getClass());
-		DynamicProxyFilterConfig bean = ac.getBean(DynamicProxyFilterConfig.class);
-		OrderServiceV1 bean1 = ac.getBean(OrderServiceV1.class);
-		log.info("order class = {}", bean1.getClass());
-		log.info("bean class = {}", bean.getClass());
+		ApplicationContext ac = new AnnotationConfigApplicationContext(TestA.class);
+		TestB bean = ac.getBean(TestB.class);
+		TestA bean2 = ac.getBean(TestA.class);
+		log.info("beanClass = {} " , bean2.getClass());
+		log.info("beanClass = {} " , bean.getClass());
+
+	}
+
+	@Configuration
+	static class TestA{
+		@Bean
+		public TestB testB() {
+			return new TestB();
+		}
+	}
+
+	@Slf4j
+	static class TestB{
+		public void call() {
+			log.info("callB");
+
+		}
 	}
 
 }
