@@ -18,7 +18,6 @@ public class TimeInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         log.info("TimeProxy 실행");
         long startTime = System.currentTimeMillis();
-
         Object result = method.invoke(target, args);
 
         long endTime = System.currentTimeMillis();
